@@ -7,7 +7,7 @@ import java.io.IOException;
 public class DirectoryWatcherTest {
     @Test
     public void shouldInvokeListenerWhenDirectoryChanges() throws IOException, InterruptedException {
-        DirectoryWatcher watcher = new DirectoryWatcher("C:\\Users\\Mut-e\\antonio");
+        DirectoryWatcher watcher = new DirectoryWatcher("C:\\Users");
         ChangeListener listener = new DirectoryChangeListener();
         watcher.watch(listener);
 

@@ -41,8 +41,8 @@ public class EmailClient {
         Properties properties = new Properties();
         properties.setProperty("server", "smtp.gmail.com");
         properties.setProperty("port","587");
-        properties.setProperty("username","amhfilho@gmail.com");
-        properties.setProperty("password","Ind14p4l34l3");
+        properties.setProperty("username","***");
+        properties.setProperty("password","***");
         try {
             new EmailClient(properties).send(new EmailMessage.
                     Builder()
