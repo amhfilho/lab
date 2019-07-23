@@ -44,12 +44,12 @@ public class EmailSender {
 		generateMailMessage = new MimeMessage(getMailSession);
 		try {
 			generateMailMessage.addRecipient(Message.RecipientType.TO,
-					new InternetAddress(reader.get("email")));
+					new InternetAddress(reader.get("targetemail")));
 
 			// generateMailMessage.addRecipient(Message.RecipientType.CC, new
 			// InternetAddress("test2@crunchify.com"));
 			generateMailMessage.setSubject(subject);
-			generateMailMessage.setFrom(new InternetAddress(reader.get("email")));
+			generateMailMessage.setFrom(new InternetAddress(reader.get("sourceemail")));
 			generateMailMessage.setContent(text, "text/html");
 			// System.out.println("Mail Session has been created successfully..");
 
