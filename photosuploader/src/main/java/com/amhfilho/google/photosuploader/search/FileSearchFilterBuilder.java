@@ -1,4 +1,4 @@
-package com.amhfilho.google;
+package com.amhfilho.google.photosuploader.search;
 
 import java.time.LocalDate;
 import java.util.HashSet;

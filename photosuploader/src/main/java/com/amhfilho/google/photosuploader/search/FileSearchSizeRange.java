@@ -1,4 +1,4 @@
-package com.amhfilho.google;
+package com.amhfilho.google.photosuploader.search;
 
 public class FileSearchSizeRange {
     private double minBytes;

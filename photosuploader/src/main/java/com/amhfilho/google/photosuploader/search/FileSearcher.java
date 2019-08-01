@@ -1,4 +1,4 @@
-package com.amhfilho.google;
+package com.amhfilho.google.photosuploader.search;
 
 import java.nio.file.Path;
 import java.util.List;
