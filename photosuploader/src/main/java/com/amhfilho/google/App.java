@@ -7,6 +7,8 @@ import com.amhfilho.google.photosuploader.search.DefaultFileSearcher;
 import com.amhfilho.google.photosuploader.search.FileSearchFilter;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.api.gax.rpc.ApiException;
+import com.google.auth.oauth2.AccessToken;
+import com.google.auth.oauth2.UserCredentials;
 import com.google.photos.library.v1.PhotosLibraryClient;
 import com.google.photos.library.v1.PhotosLibrarySettings;
 
@@ -16,6 +18,7 @@ import javax.persistence.Persistence;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,12 +43,16 @@ public class App {
 
     }
 
-    public void testGoogle(){
+    public void testGoogle() throws IOException {
         // Set up the Photos Library Client that interacts with the API
         PhotosLibrarySettings settings =
                 PhotosLibrarySettings.newBuilder()
                         .setCredentialsProvider(
-                                FixedCredentialsProvider.create(/* Add credentials here. */))
+                                FixedCredentialsProvider.create(UserCredentials.newBuilder()
+                                        .setClientId("your client id")
+                                        .setClientSecret("your client secret")
+                                        .setAccessToken(new AccessToken("Access Token",new Date()))
+                                        .build()))
                         .build();
 
         try (PhotosLibraryClient photosLibraryClient =
