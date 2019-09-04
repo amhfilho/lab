@@ -1,51 +1,66 @@
 package com.amhfilho.server;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public class DistribuirTarefas implements Runnable {
     private Socket socket;
-    private int threadId;
-    private ServidorTarefas tarefas;
+    private ServidorTarefas servidor;
+    private ExecutorService executorService;
+    private BlockingQueue<String> filaComandos;
 
-    public DistribuirTarefas(Socket socket, int threadId, ServidorTarefas tarefas) {
+    public DistribuirTarefas(Socket socket, ServidorTarefas servidor, ExecutorService executorService, BlockingQueue<String> filaComandos) {
         this.socket = socket;
-        this.threadId = threadId;
-        this.tarefas = tarefas;
+        this.servidor = servidor;
+        this.executorService = executorService;
+        this.filaComandos = filaComandos;
     }
 
     @Override
     public void run() {
-        System.out.println("Distribuindo tarefas para " + socket + " com thread Id " + threadId);
+        System.out.println("Distribuindo tarefas para " + socket);
         try {
-            //Scanner scanner = new Scanner(socket.getInputStream());
-            //PrintStream saidaCliente = new PrintStream(socket.getOutputStream());
-            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+            Scanner scanner = new Scanner(socket.getInputStream());
+            PrintStream saidaCliente = new PrintStream(socket.getOutputStream());
 
-            final int millis = randomTime(10000, 20000);
-            //sleep(millis);
+            while(scanner.hasNextLine()){
+                String command = scanner.nextLine();
+                saidaCliente.println("Comando recebido: " + command);
+                switch (command){
+                    case "c1":
+                        System.out.println("Cliente enviou comando c1");
+                        executorService.execute(new ComandoC1(saidaCliente));
+                        break;
+                    case "c2":
+                        System.out.println("Cliente enviou comando c2");
+                        Future<String> futureWs  = executorService.submit(new ComandoC2ChamaWS(saidaCliente));
+                        Future<String> futureBanco = executorService.submit(new ComandoC2ChamaBanco(saidaCliente));
+                        executorService.submit(new JuntaFutures(futureWs,futureBanco,saidaCliente));
+                        break;
+                    case "c3":
+                        System.out.println("Cliente enviou comando c3");
+                        this.filaComandos.put(command);
+                        saidaCliente.println("Comando c3 adicionado na fila");
+                        break;
 
+                    case "exit":
+                        servidor.parar();
+                    default:
+                        System.out.println("Comando invalido");
+                        saidaCliente.println("Comando invalido");
+                }
 
+            }
+            saidaCliente.close();
+            scanner.close();
 
-            //while(scanner.hasNextLine()){
-                //String command = scanner.nextLine();
-            Mensagem mensagem = (Mensagem)inputStream.readObject();
-                System.out.println(mensagem);
-                //saidaCliente.println("Comando recebido: " + command);
-                tarefas.broadcastMensagem(mensagem);
-            //}
-
-            //saidaCliente.close();
-            //scanner.close();
-            inputStream.reset();
-//            System.out.println("Processamento finalizado para o socket " + socket.getPort() + " em " + millis + " milissegundos");
-
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 

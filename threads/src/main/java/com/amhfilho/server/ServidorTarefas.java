@@ -1,54 +1,62 @@
 package com.amhfilho.server;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.SocketException;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ServidorTarefas {
-    List<PrintStream> streams = new ArrayList<>();
-    List<ObjectOutputStream> objectOutputStreams = new ArrayList<>();
 
-    public void start() throws IOException {
+    private final ServerSocket servidor;
+    private final ExecutorService executor;
+    private AtomicBoolean estaRodando;
+    private BlockingQueue<String> filaComandos;
+
+    public ServidorTarefas() throws IOException {
         System.out.println(Runtime.getRuntime().availableProcessors() + " processadores");
         System.out.println("Iniciando o servidor...");
-        ServerSocket servidor = new ServerSocket(12345);
-        int idcount = 0;
+        servidor = new ServerSocket(12345);
+        executor = Executors.newCachedThreadPool();
+        estaRodando = new AtomicBoolean(true);
+        filaComandos = new ArrayBlockingQueue<>(2);
+        iniciarConsumidores();
+    }
 
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-
-        while(true) {
-            Socket socket = servidor.accept();
-            System.out.println("Aceitando um novo cliente na porta " + socket.getPort());
-            streams.add(new PrintStream(socket.getOutputStream()));
-            objectOutputStreams.add(new ObjectOutputStream(socket.getOutputStream()));
-            executor.execute(new DistribuirTarefas(socket, idcount++, this));
-
-            //Thread.sleep(10000);
+    private void iniciarConsumidores() {
+        int consumidores = 2;
+        for(int i = 0; i < consumidores; i++){
+            TarefaConsumir tarefaConsumir = new TarefaConsumir(filaComandos);
+            executor.execute(tarefaConsumir);
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        new ServidorTarefas().start();
-    }
 
-    public void broadcast(String message){
-        streams.forEach(x->x.println(message));
-    }
-
-    public void broadcastMensagem(Mensagem mensagem){
-        objectOutputStreams.forEach(x-> {
+    public void rodar() throws IOException {
+        while(this.estaRodando.get()) {
             try {
-                x.writeObject(mensagem);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                Socket socket = servidor.accept();
+                System.out.println("Aceitando um novo cliente na porta " + socket.getPort());
+                executor.execute(new DistribuirTarefas(socket, this, executor, filaComandos));
+            } catch (SocketException e){
+                System.out.println("SocketException, esta rodando? " + this.estaRodando.get());
             }
-        });
+        }
+    }
+
+    public void parar() throws IOException {
+        this.estaRodando.set(false);
+        servidor.close();
+        executor.shutdown();
+    }
+
+    public static void main(String[] args) throws IOException {
+        ServidorTarefas servidorTarefas = new ServidorTarefas();
+        servidorTarefas.rodar();
     }
 
 
