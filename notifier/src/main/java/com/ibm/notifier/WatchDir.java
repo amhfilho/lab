@@ -150,8 +150,8 @@ public class WatchDir {
 
                 // print out event
                 System.out.format("%s: %s\n", event.kind().name(), child);
-                
-                new EmailSender().sendMessage(String.format("Sametime from: %s", new EmailExtractor().extract(event.kind().name())),"Sametime");
+                String message = String.format("Sametime from: %s", new EmailExtractor().extract(child.toString()));
+                new EmailSender().sendMessage(message,"Sametime");
 
                 // if directory is created, and watching recursively, then
                 // register it and its sub-directories

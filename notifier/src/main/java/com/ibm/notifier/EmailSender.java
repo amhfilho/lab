@@ -51,6 +51,10 @@ public class EmailSender {
 			generateMailMessage.setSubject(subject);
 			generateMailMessage.setFrom(new InternetAddress(reader.get("sourceemail")));
 			generateMailMessage.setContent(text, "text/html");
+			generateMailMessage.addHeader("X-Priority", "1") ;
+			generateMailMessage.addHeader("Importance","high");
+			generateMailMessage.addHeader("Priority","Urgent");
+
 			// System.out.println("Mail Session has been created successfully..");
 
 			// Step3
