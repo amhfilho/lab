@@ -11,15 +11,10 @@ public class App {
         LocalTime begin = LocalTime.parse(sBegin, formatter);
 
         int extra = 0;
-        int minutes = 48;
         if(args.length > 1){
             extra = Integer.parseInt(args[1]);
-            minutes = 0;
         }
-        LocalTime end = begin.plus(9, ChronoUnit.HOURS)
-                .plus(minutes, ChronoUnit.MINUTES)
-                .plus(extra, ChronoUnit.HOURS);
-
+        LocalTime end = new TimeCalculator().calculate(begin, extra);
         System.out.println(end);
     }
 }
