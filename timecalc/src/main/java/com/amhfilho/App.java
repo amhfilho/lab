@@ -11,10 +11,27 @@ public class App {
         LocalTime begin = LocalTime.parse(sBegin, formatter);
 
         int extra = 0;
-        if(args.length > 1){
-            extra = Integer.parseInt(args[1]);
+        if(args.length == 2){
+            if(isInteger(args[1])){
+                extra = Integer.parseInt(args[1]);
+                LocalTime end = new TimeCalculator().calculate(begin, extra);
+                System.out.println(end);
+            }
+            else if(args[1].equals("-c")){
+                TimeDecimalConverter converter = new TimeDecimalConverter();
+                System.out.println(converter.toDecimal(sBegin));
+            }
         }
-        LocalTime end = new TimeCalculator().calculate(begin, extra);
-        System.out.println(end);
+
+    }
+
+    private static boolean isInteger(String arg) {
+        if(arg == null) return false;
+        try {
+            Integer.parseInt(arg);
+        } catch (NumberFormatException e){
+            return false;
+        }
+        return true;
     }
 }
