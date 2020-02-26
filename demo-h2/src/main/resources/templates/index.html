@@ -7,20 +7,19 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
-<div class="container">
+<div class="container my-5">
 
     <div class="starter-template">
-        <h1>Spring Boot Web Thymeleaf + Spring Security</h1>
-        <h2>1. Visit <a th:href="@{/admin}">Admin page (Spring Security protected, Need Admin Role)</a></h2>
-        <h2>2. Visit <a th:href="@{/user}">User page (Spring Security protected, Need User Role)</a></h2>
-        <h2>3. Visit <a th:href="@{/about}">Normal page</a></h2>
+        <h3>1. Visit <a th:href="@{/admin}">Admin page (Spring Security protected, Need Admin Role)</a></h3>
+        <h3>2. Visit <a th:href="@{/user}">User page (Spring Security protected, Need User Role)</a></h3>
+        <h3>3. Visit <a th:href="@{/about}">Normal page</a></h3>
     </div>
 
     <div th:switch="${props}">
         <h2 th:case="null">No properties yet!</h2>
         <div th:case="*">
-            <h2>Properties</h2>
-            <table>
+            <h2 class="my-5">Properties</h2>
+            <table class="table table-striped table-responsive-md">
                 <thead>
                 <tr>
                     <th>Key</th>
