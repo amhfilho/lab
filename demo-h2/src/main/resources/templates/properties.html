@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Properties</title>
+    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">Demo-h2</a>
+</nav>
+<main role="main" class="container">
+    <div th:switch="${props}">
+        <h2 th:case="null">No properties yet!</h2>
+        <div th:case="*">
+            <h2>Properties</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="prop : ${props}">
+                    <td th:text="${prop.key}"></td>
+                    <td th:text="${prop.value}"></td>
+                    <td><a th:href="@{/edit/{id}(id=${prop.id})}">Edit</a></td>
+                    <td><a th:href="@{/delete/{id}(id=${prop.id})}">Delete</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<script type="text/javascript" th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+</body>
+</html>
