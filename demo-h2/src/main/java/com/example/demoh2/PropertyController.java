@@ -10,9 +10,9 @@ public class PropertyController {
     @Autowired
     private PropertyRepository repository;
 
-    @GetMapping("/props")
+    @GetMapping("/")
     public String properties(Model model) {
         model.addAttribute("props",repository.findAll());
-        return "properties";
+        return "index";
     }
 }
