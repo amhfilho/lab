@@ -46,8 +46,8 @@ public class EmailClient {
         try {
             new EmailClient(properties).send(new EmailMessage.
                     Builder()
-                    .to("amhfilho@gmail.com")
-                    .from("amhfilho@gmail.com")
+                    .to("xxx@xxx.com")
+                    .from("xxx@xxx.com")
                     .subject("test message")
                     .body("body")
                     .build()
