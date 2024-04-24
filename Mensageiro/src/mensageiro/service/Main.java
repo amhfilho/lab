@@ -41,8 +41,8 @@ public class Main {
             
             // Criando fila para envio
             List<Paciente> filaParaEnviar = new ArrayList<Paciente>();
-            // Verificando se e-mail j· foi enviado para cada aniversariante
-            // Se n„o, adiciona na fila
+            // Verificando se e-mail j√° foi enviado para cada aniversariante
+            // Se n√£o, adiciona na fila
             MensagensEnviadasDAO meDAO = MensagensEnviadasDAO.getInstance();
             System.out.println("Aniversariantes do dia:");
             for (Paciente p : aniversariantes) {
@@ -59,8 +59,8 @@ public class Main {
                 //Faz o envio do e-mail
                 SendMailAuthAttach emissor = new SendMailAuthAttach();
                 List<String> destinatarios = new ArrayList<String>();
-                p.setEmail1("ariadinepaesdealmeida@yahoo.com.br");
-                p.setEmail2("antonio-henriques@uol.com.br");
+                p.setEmail1("xxx@xxx.com.br");
+                p.setEmail2("xxxxxx@xxx.com.br");
                 if (p.getEmail1()!=null && ValidadorEmail.isValid(p.getEmail1())){
                     destinatarios.add(p.getEmail1());
                 }
@@ -71,7 +71,7 @@ public class Main {
                     emissor.postMail(destinatarios);
                     System.out.println("E-mail enviado para: "+p.getNome());
                 } else {
-                    System.out.println("E-mail n„o enviado para "+p.getNome()+
+                    System.out.println("E-mail n√£o enviado para "+p.getNome()+
                             ". e-mail invalido");
                 }                
                 
