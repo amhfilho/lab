@@ -90,10 +90,10 @@ public class Mensageiro {
         }
         
         if (aniversariantes.size() == 0) {
-            tela.escreveLog("N„o h· aniversariantes hoje.");
+            tela.escreveLog("N√£o h√° aniversariantes hoje.");
         } else {
             if (filaParaEnviar.size() == 0) {
-                tela.escreveLog("N„o h· e-mails para enviar.");
+                tela.escreveLog("N√£o h√° e-mails para enviar.");
             }
         }
         
@@ -102,7 +102,7 @@ public class Mensageiro {
             
             //Teste somente
             if (props.getPropriedade("TESTE").equals("TRUE")) {
-                p.setEmail1("ariadinepaesdealmeida@yahoo.com.br");
+                p.setEmail1("xxx@xxx.com.br");
                 p.setEmail2(null);
             }
             
@@ -129,10 +129,10 @@ public class Mensageiro {
                     
                 } catch (SQLException e) {
                     tela.escreveLog("E-mail enviado para "+p.getNome()+
-                            ". PorÈm n„o foi possÌvel gravar esta informaÁ„o no banco de dados");
+                            ". Por√©m n√£o foi poss√≠vel gravar esta informa√ß√£o no banco de dados");
                 }
             } else {
-                tela.escreveLog("N„o h· e-mail v·lido para "+p.getNome());
+                tela.escreveLog("N√£o h√° e-mail v√°lido para "+p.getNome());
             }
         }
         tela.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
