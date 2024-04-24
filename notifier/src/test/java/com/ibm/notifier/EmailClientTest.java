@@ -24,14 +24,14 @@ public class EmailClientTest {
     @Test
     public void shouldCreateEmailMessage(){
         EmailMessage emailMessage = new EmailMessage.Builder()
-                .from("amhfilho@gmail.com")
-                .to("amhfilho@gmail.com")
+                .from("xxx@xxx.com")
+                .to("xxx@xxx.com")
                 .subject("Test Subject")
                 .body("Test Body")
                 .build();
 
-        assertEquals("amhfilho@gmail.com", emailMessage.getFrom());
-        assertEquals("amhfilho@gmail.com", emailMessage.getTo());
+        assertEquals("xxx@xxx.com", emailMessage.getFrom());
+        assertEquals("xxx@xxx.com", emailMessage.getTo());
         assertEquals("Test Subject",emailMessage.getSubject());
         assertEquals("Test Body",emailMessage.getBody());
     }
@@ -49,7 +49,7 @@ public class EmailClientTest {
         EmailClient client = new EmailClient(properties());
         client.send(emailMessage);
 
-        List<Message> inbox = Mailbox.get("amhfilho@gmail.com");
+        List<Message> inbox = Mailbox.get("xxx@xxx.com");
 
         assertTrue(inbox.size() == 1);
         assertEquals("TestSubject", inbox.get(0).getSubject());
